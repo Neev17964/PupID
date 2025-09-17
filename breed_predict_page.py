@@ -1,19 +1,17 @@
-import streamlit as st
-from PIL import Image
+import os
+import time
+import warnings
+import logging
 import numpy as np
-import cv2
-from keras.models import load_model
+import streamlit as st
+import gdown
+from PIL import Image
+from tensorflow.keras.models import load_model #type: ignore
 from labels import class_labels
 from bread_dogs_data import breed_info
-import os
-import logging
-import warnings
-import time
 
-# Suppress TensorFlow logs
+# Suppress TensorFlow & warnings
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
-
-# Suppress warnings
 warnings.filterwarnings("ignore")
 logging.getLogger("tensorflow").setLevel(logging.ERROR)
 
@@ -21,30 +19,42 @@ logging.getLogger("tensorflow").setLevel(logging.ERROR)
 SAVE_DIR = "uploaded_images"
 os.makedirs(SAVE_DIR, exist_ok=True)
 
+# Model config
+MODEL_PATH = "model.keras"
+FILE_ID = "1bUuyKws0NA4zHAOgu8Nrrx5-jLBYEU-a"  # Google Drive File ID
+
+def download_model_if_missing():
+    if os.path.exists(MODEL_PATH):
+        return
+    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    st.info("Downloading the model (first run only) — this can take a minute...")
+    gdown.download(url, MODEL_PATH, quiet=False)
+
+# Cache model across runs
+try:
+    cache_decorator = st.cache_resource
+except AttributeError:
+    cache_decorator = lambda f: st.cache(allow_output_mutation=True)(f)
+
+@cache_decorator
+def load_model_cached(path=MODEL_PATH):
+    return load_model(path, compile=False)
+
+# Ensure model is present, then load
+download_model_if_missing()
+model = load_model_cached()
+
 def save_uploaded_file(uploaded_file, max_age=300):
-    """
-    Save uploaded file & clean old files.
-    max_age: in seconds (default: 5 min)
-    """
-    # Clean old files
+    """Save uploaded file & clean old ones (older than max_age seconds)."""
     now = time.time()
     for fname in os.listdir(SAVE_DIR):
         fpath = os.path.join(SAVE_DIR, fname)
-        if os.path.isfile(fpath):
-            if now - os.path.getmtime(fpath) > max_age:
-                os.remove(fpath)
-    # Save new file
+        if os.path.isfile(fpath) and now - os.path.getmtime(fpath) > max_age:
+            os.remove(fpath)
     file_path = os.path.join(SAVE_DIR, uploaded_file.name)
     with open(file_path, "wb") as f:
         f.write(uploaded_file.getbuffer())
     return file_path
-
-# Load your trained model
-@st.cache_resource
-def load_model_cached():
-    return load_model("trained_model.keras", compile=False)
-
-model = load_model_cached()
 
 def predict_image(img_path):
     import tensorflow as tf
