@@ -19,7 +19,7 @@ st.set_page_config(
     page_title="PupID - Dog Breed Classifier",
     page_icon="🐶",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 st.markdown("""
@@ -200,5 +200,6 @@ footer {
     </div>
 </footer>
 """
+
 
 st.markdown(footer, unsafe_allow_html=True)
