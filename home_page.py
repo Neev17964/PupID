@@ -347,46 +347,56 @@ def show_home_page():
             
             /* Responsive design */
             @media (max-width: 768px) {
-                .glass-hero {
-                    padding: 1.5rem 1rem;
-                    text-align: center; /* center content on mobile */
-                }
-
-                .feature-card {
-                    min-height: 220px;  /* flexible instead of fixed */
-                    padding: 1.2rem;
-                    font-size: 0.95rem;
-                }
-
-                .stat-card {
-                    min-height: 150px;  /* allow auto growth if text wraps */
-                    padding: 1.5rem 1rem;
-                    font-size: 0.9rem;
-                }
-
-                .breed-showcase {
-                    min-height: 180px; /* give enough space for images/text */
-                    padding: 1rem;
-                }
-
-                /* Optional: stack cards vertically */
-                .features-grid, .stats-grid {
-                    grid-template-columns: 1fr; 
-                    gap: 1rem; 
-                }
-
-                /* Make text/images scale nicely */
-                .feature-card h3, 
-                .stat-card h3 {
-                    font-size: 1.1rem;
-                }
-
-                .feature-card p, 
-                .stat-card p {
-                    font-size: 0.85rem;
-                    line-height: 1.4;
-                }
+            .glass-hero {
+                padding: 2rem 1.2rem;  /* a bit more breathing room */
+                text-align: center;
             }
+
+            .feature-card {
+                min-height: 250px;  /* slightly taller for readability */
+                padding: 1.5rem;
+                font-size: 1rem;    /* comfortable on high-res screens */
+            }
+
+            .stat-card {
+                min-height: 180px;
+                padding: 1.8rem 1.2rem;
+                font-size: 0.95rem;
+            }
+
+            .breed-showcase {
+                min-height: 200px;  /* bigger showcase section */
+                padding: 1.2rem;
+            }
+
+            /* Stack cards vertically on mobile */
+            .features-grid, .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            /* Make headings pop */
+            .feature-card h3, 
+            .stat-card h3 {
+                font-size: 1.2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            /* Body text more readable */
+            .feature-card p, 
+            .stat-card p {
+                font-size: 0.9rem;
+                line-height: 1.5;
+            }
+
+            /* Images inside cards responsive */
+            .feature-card img,
+            .breed-showcase img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 12px;
+            }
+        }
         </style>
     """, unsafe_allow_html=True)
     
@@ -551,4 +561,5 @@ def show_home_page():
             </div>
         </div>
     """, unsafe_allow_html=True)
+
 
