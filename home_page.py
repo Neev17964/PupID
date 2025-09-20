@@ -347,10 +347,45 @@ def show_home_page():
             
             /* Responsive design */
             @media (max-width: 768px) {
-                .glass-hero { padding: 2rem 1.5rem; }
-                .feature-card { height: 280px; padding: 1.5rem; }
-                .stat-card { height: 180px; padding: 2rem 1rem; }
-                .breed-showcase { height: 150px; padding: 1.5rem; }
+                .glass-hero {
+                    padding: 1.5rem 1rem;
+                    text-align: center; /* center content on mobile */
+                }
+
+                .feature-card {
+                    min-height: 220px;  /* flexible instead of fixed */
+                    padding: 1.2rem;
+                    font-size: 0.95rem;
+                }
+
+                .stat-card {
+                    min-height: 150px;  /* allow auto growth if text wraps */
+                    padding: 1.5rem 1rem;
+                    font-size: 0.9rem;
+                }
+
+                .breed-showcase {
+                    min-height: 180px; /* give enough space for images/text */
+                    padding: 1rem;
+                }
+
+                /* Optional: stack cards vertically */
+                .features-grid, .stats-grid {
+                    grid-template-columns: 1fr; 
+                    gap: 1rem; 
+                }
+
+                /* Make text/images scale nicely */
+                .feature-card h3, 
+                .stat-card h3 {
+                    font-size: 1.1rem;
+                }
+
+                .feature-card p, 
+                .stat-card p {
+                    font-size: 0.85rem;
+                    line-height: 1.4;
+                }
             }
         </style>
     """, unsafe_allow_html=True)
@@ -516,3 +551,4 @@ def show_home_page():
             </div>
         </div>
     """, unsafe_allow_html=True)
+
